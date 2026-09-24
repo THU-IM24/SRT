@@ -12,7 +12,7 @@
 - `main` 只通过 Pull Request 合并。提交人不得自行合并。合并前必须由 GitHub 账号 `feiys22` 审核并批准。
 - 不要直接推送 `main`，不要强推，不要改写已共享历史。
 - 协作者权限用 Write。不授予 Admin 或 Owner。Owner 和 Admin 可以修改分支规则或绕过 `feiys22` 的审核，与上述合并要求冲突。
-- `main` 已开启分支保护：要求 Pull Request、要求 1 个批准、禁止管理员绕过、禁止强推和删除分支。协作者若被改为 Admin 或 Owner，等于绕开这层保护，不要再给。
+- `main` 已开启分支保护：要求 Pull Request、要求 1 个批准、禁止强推和删除分支。仓库 owner 保留管理员直推权限，方便本地收尾；其他协作者只有 Write，无法直接推送 `main`。若把协作者改成 Admin 或 Owner，等于一并给了他直推权限，不要再给。
 - 智能体不代为创建远程、邀请协作者、修改权限或合并 Pull Request，除非 `feiys22` 当次明确要求。
 
 ## 执行
