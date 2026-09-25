@@ -42,6 +42,10 @@ local/      本机文件，不入库
 
 原始数据和可重新生成的产物不进入版本库，只保留目录说明。具体规则见 `AGENTS.md`。
 
+## 数据采集
+
+公开帖子和评论用 `src/collect/collect_moltbook.py` 抓取。环境要求见 `src/collect/README.md`，数据边界见 `docs/data-collection.md`。新结果写入 `raw/crawl/`，不进入版本库。
+
 ## 如何参与
 
 代码与文档的修改都通过 Pull Request 提交。`main` 分支由 GitHub 账号 `feiys22` 审核后合并，不直接推送。提交前请先读 `AGENTS.md`。

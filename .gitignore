@@ -36,3 +36,7 @@ local/**
 # 可重新生成的实验产物仅保留在本机；目录说明仍上传
 raw/outputs/**
 !raw/outputs/README.md
+
+# 采集到的原始数据不入库；目录说明仍上传
+raw/crawl/**
+!raw/crawl/README.md
