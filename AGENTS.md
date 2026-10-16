@@ -9,9 +9,9 @@
 ## 协作
 
 - 仓库为公开仓库。
-- `main` 只通过 Pull Request 合并。提交人不得自行合并。合并前必须由 GitHub 账号 `feiys22` 审核并批准。
+- `main` 只通过 Pull Request 合并。提交人不得自行合并。队友之间可以互相审核并批准 PR，建议开 PR 时把 `feiys22` 选为审核人。PR 作者不能批准自己的 PR。
 - 不要直接推送 `main`，不要强推，不要改写已共享历史。
-- 协作者权限用 Write。不授予 Admin 或 Owner。Owner 和 Admin 可以修改分支规则或绕过 `feiys22` 的审核，与上述合并要求冲突。
+- 协作者权限用 Write。不授予 Admin 或 Owner。Owner 和 Admin 可以修改分支规则或绕过审核要求，与上述合并要求冲突。
 - `main` 已开启分支保护：要求 Pull Request、要求 1 个批准、禁止强推和删除分支。仓库 owner 保留管理员直推权限，方便本地收尾；其他协作者只有 Write，无法直接推送 `main`。若把协作者改成 Admin 或 Owner，等于一并给了他直推权限，不要再给。
 - 智能体不代为创建远程、邀请协作者、修改权限或合并 Pull Request，除非 `feiys22` 当次明确要求。
 
