@@ -1,15 +1,16 @@
-"""把 raw/crawl 下的帖子和评论 jsonl.gz 转成 Parquet，按 id 去重，输出到 raw/outputs/。
+"""把 /data/srt/raw/crawl 下的帖子和评论 jsonl.gz 转成 Parquet，按 id 去重，输出到 /data/srt/outputs/。
 
-用法（在仓库根目录）：python src/prepare/convert_to_parquet.py
+用法（在仓库根目录）：sudo python src/prepare/convert_to_parquet.py（/data/srt 只有管理员能写）
 做法：每 100 个文件一批写成分片，统一 UUID 列为文本，再合并去重，最后删除分片。
 内存上限 3GB、2 线程，适合 8G 内存的服务器；建议在 tmux 里用 nice/ionice 运行。
 """
 import glob, os, re, shutil
 import duckdb
 
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-RAW = os.path.join(ROOT, "raw", "crawl")
-OUT = os.path.join(ROOT, "raw", "outputs")
+# 共享数据目录，默认 /data/srt；可用环境变量 SRT_DATA_DIR 改到别处
+DATA_DIR = os.environ.get("SRT_DATA_DIR", "/data/srt")
+RAW = os.path.join(DATA_DIR, "raw", "crawl")
+OUT = os.path.join(DATA_DIR, "outputs")
 SHARDS = os.path.join(OUT, "_shards")
 TMP = os.path.join(OUT, "_tmp")
 BATCH = 100

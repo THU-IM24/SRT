@@ -42,12 +42,10 @@ results/         可公开的小图表和汇总表
 docs/learn/      学习资料：概念页、教程页
 docs/papers/     文献笔记
 docs/notes/      组会记录、研究设计、数据采集说明
-raw/crawl/       原始采集数据，不入库
-raw/outputs/     整理后的数据和大结果，不入库
-local/           本机文件，不入库
+personal/        个人文件夹，不入库，别人看不到
 ```
 
-原始数据和可重新生成的产物不进入版本库，只保留目录说明。具体规则见 `AGENTS.md`。
+数据不在仓库里，统一放在服务器 `/data/srt`（只读）。具体规则见 `AGENTS.md`。
 
 ## 快速开始
 
@@ -59,13 +57,13 @@ conda activate srt
 cd ~/srt/code
 ```
 
-整理好的数据在 `raw/outputs/`：`posts.parquet`（帖子）和 `comments.parquet`（评论）。用 duckdb 读一下：
+整理好的数据在 `/data/srt/outputs/`：`posts.parquet`（帖子）和 `comments.parquet`（评论）。用 duckdb 读一下：
 
 ```python
 import duckdb
 duckdb.sql("""
     SELECT post_id, count(*) AS n
-    FROM 'raw/outputs/comments.parquet'
+    FROM '/data/srt/outputs/comments.parquet'
     GROUP BY post_id ORDER BY n DESC LIMIT 5
 """).show()
 ```
@@ -74,7 +72,7 @@ duckdb.sql("""
 
 ## 数据采集
 
-公开帖子和评论用 `src/collect/collect_moltbook.py` 抓取，环境要求见 `src/collect/README.md`，数据边界见 `docs/notes/data-collection.md`。新结果写入 `raw/crawl/`，再用 `src/prepare/convert_to_parquet.py` 转成 Parquet。
+公开帖子和评论用 `src/collect/collect_moltbook.py` 抓取，环境要求见 `src/collect/README.md`，数据边界见 `docs/notes/data-collection.md`。新结果写入 `/data/srt/raw/crawl/`，再用 `src/prepare/convert_to_parquet.py` 转成 Parquet。
 
 ## 如何参与
 
@@ -83,3 +81,11 @@ duckdb.sql("""
 ## 指导教师
 
 郭迅华，清华大学经济管理学院管理科学与工程系教授。公开研究领域为管理信息系统、电子商务、社会网络、商务智能；研究工作同时做设计科学与行为分析，关注人智融合行为。2005 年起至今在清华大学经济管理学院管理科学与工程系担任教职。现为清华大学经济管理学院教授，兼任国际信息协会中国分会（CNAIS）常务理事兼秘书长、中国信息经济学会副理事长、中国管理现代化研究会信息管理专业委员会秘书长、《信息系统学报》主编助理等职。
+
+## 在服务器上一起工作
+
+- 每人一个自己的账号。登录后把仓库克隆到自己的主目录：`git clone git@github.com:THU-IM24/SRT.git ~/SRT`。
+- `~/SRT/personal/` 是个人文件夹，放草稿和练习，不进仓库，别人看不到。
+- 数据在 `/data/srt`，大家共用一份，只读：原始数据在 `/data/srt/raw/crawl/`，整理好的表在 `/data/srt/outputs/`。
+- 改代码或写文档时，先建自己的分支，写完推送并开 PR，别人批准后合并进 main。
+- 想看别人已经合并的文档和代码，在自己的 `~/SRT` 里运行 `git pull`。

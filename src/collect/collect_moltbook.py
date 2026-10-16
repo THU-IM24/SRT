@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Collect Moltbook posts and comments into raw/crawl.
+"""Collect Moltbook posts and comments into /data/srt/raw/crawl.
 
 The public list no longer honors offset. This script pages backward with
 next_cursor, flattens nested replies into parent_id, and fetches comments

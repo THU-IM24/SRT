@@ -1,6 +1,6 @@
 # prepare —— 数据整理
 
-- `convert_to_parquet.py`：把 `raw/crawl/` 的帖子和评论转成 `raw/outputs/posts.parquet`、`comments.parquet`，按 `id` 去重。
+- `convert_to_parquet.py`：把 `/data/srt/raw/crawl/` 的帖子和评论转成 `/data/srt/outputs/posts.parquet`、`comments.parquet`，按 `id` 去重。
 
 在仓库根目录运行：
 
