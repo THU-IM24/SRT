@@ -29,22 +29,52 @@
 | 2026 年 12 月至 2027 年 1 月 | 完成评论功能抽样编码与稳健性检查 |
 | 2027 年 2 月 | 汇总判断并撰写结题报告 |
 
-## 仓库结构
+## 目录
 
 ```
-README.md   项目说明（本文件）
-AGENTS.md   协作规范与合并规则
-src/        分析与图计算代码
-docs/       研究文档
-raw/        原始数据与可重新生成的产物，不入库
-local/      本机文件，不入库
+README.md        项目说明（本文件）
+AGENTS.md        协作规范与合并规则
+src/collect/     数据采集脚本
+src/prepare/     数据整理（jsonl.gz → Parquet）
+src/analysis/    分析代码
+notebooks/       探索性笔记本
+results/         可公开的小图表和汇总表
+docs/learn/      学习资料：概念页、教程页
+docs/papers/     文献笔记
+docs/notes/      组会记录、研究设计、数据采集说明
+raw/crawl/       原始采集数据，不入库
+raw/outputs/     整理后的数据和大结果，不入库
+local/           本机文件，不入库
 ```
 
 原始数据和可重新生成的产物不进入版本库，只保留目录说明。具体规则见 `AGENTS.md`。
 
+## 快速开始
+
+数据已放在云服务器上，登录后就能分析：
+
+```bash
+ssh -i 你的密钥.pem 用户名@服务器IP
+conda activate srt
+cd ~/srt/code
+```
+
+整理好的数据在 `raw/outputs/`：`posts.parquet`（帖子）和 `comments.parquet`（评论）。用 duckdb 读一下：
+
+```python
+import duckdb
+duckdb.sql("""
+    SELECT post_id, count(*) AS n
+    FROM 'raw/outputs/comments.parquet'
+    GROUP BY post_id ORDER BY n DESC LIMIT 5
+""").show()
+```
+
+学习资料从 `docs/learn/` 开始看。
+
 ## 数据采集
 
-公开帖子和评论用 `src/collect/collect_moltbook.py` 抓取。环境要求见 `src/collect/README.md`，数据边界见 `docs/data-collection.md`。新结果写入 `raw/crawl/`，不进入版本库。
+公开帖子和评论用 `src/collect/collect_moltbook.py` 抓取，环境要求见 `src/collect/README.md`，数据边界见 `docs/notes/data-collection.md`。新结果写入 `raw/crawl/`，再用 `src/prepare/convert_to_parquet.py` 转成 Parquet。
 
 ## 如何参与
 

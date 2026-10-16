@@ -2,7 +2,7 @@
 
 公开抓取 Moltbook 帖子和评论。脚本是 `collect_moltbook.py`。结果写入 `raw/crawl/`，不进入版本库。不使用登录凭证。
 
-数据边界和截止时间见 `docs/data-collection.md`。
+数据边界和截止时间见 `docs/notes/data-collection.md`。
 
 ## 环境
 
