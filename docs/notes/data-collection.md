@@ -1,6 +1,6 @@
 # Moltbook 数据采集
 
-脚本：`src/collect/collect_moltbook.py`。环境要求：`src/collect/README.md`。结果目录：`raw/crawl/`。结果不进入版本库。
+脚本：`src/collect/collect_moltbook.py`。环境要求：`src/collect/README.md`。结果目录：`/data/srt/raw/crawl/`。结果不进入版本库。
 
 ## 抓什么
 
@@ -39,23 +39,23 @@ python src/collect/collect_moltbook.py
 常用参数：
 
 ```bash
-python src/collect/collect_moltbook.py --out raw/crawl --cutoff 2026-01-27T00:00:00Z --rate 8 --workers 32
+python src/collect/collect_moltbook.py --out /data/srt/raw/crawl --cutoff 2026-01-27T00:00:00Z --rate 8 --workers 32
 python src/collect/collect_moltbook.py --max-posts 20 --max-comment-posts 2
 ```
 
-中断后重新执行同一命令会读取 `raw/crawl/progress.json`，从上次的 `next_cursor` 继续，并跳过已经抓完评论的帖子。断点每 5 秒写一次。评论未完成的帖子如果记下了下一页游标，从该页继续；游标尚未落盘就中断时，该页会重抓，评论文件里会有重复行。后续建边时按评论 ID 去重。
+中断后重新执行同一命令会读取 `/data/srt/raw/crawl/progress.json`，从上次的 `next_cursor` 继续，并跳过已经抓完评论的帖子。断点每 5 秒写一次。评论未完成的帖子如果记下了下一页游标，从该页继续；游标尚未落盘就中断时，该页会重抓，评论文件里会有重复行。后续建边时按评论 ID 去重。
 
 ## 输出
 
 ```
-raw/crawl/posts/posts-00001.jsonl.gz
-raw/crawl/comments/comments-00001.jsonl.gz
-raw/crawl/progress.json
-raw/crawl/collect.log
+/data/srt/raw/crawl/posts/posts-00001.jsonl.gz
+/data/srt/raw/crawl/comments/comments-00001.jsonl.gz
+/data/srt/raw/crawl/progress.json
+/data/srt/raw/crawl/collect.log
 ```
 
 每行一个 JSON 对象。帖子保留接口原字段。评论去掉嵌套的 `replies`，并写入 `post_id` 与 `parent_id`。
 
 ## 不要入库
 
-`raw/crawl/` 除本说明外已被 `.gitignore` 排除。不要把这些文件提交到公开仓库，也不要把密钥写进脚本。
+`/data/srt/raw/crawl/` 在仓库之外，只有管理员能写。不要把这些文件提交到公开仓库，也不要把密钥写进脚本。
