@@ -1,6 +1,6 @@
 # raw/crawl —— 本次采集结果
 
-`src/collect/collect_moltbook.py` 把新抓到的帖子和评论写到这里。说明见 `docs/data-collection.md`。
+`src/collect/collect_moltbook.py` 把新抓到的帖子和评论写到这里。说明见 `docs/notes/data-collection.md`。
 
 - `posts/`：帖子，gzip 压缩的 JSONL。
 - `comments/`：评论。楼中楼已摊平，`parent_id` 指向父评论。

@@ -8,4 +8,6 @@
 
 已有代码：
 
-- `collect/`：按 `next_cursor` 抓取 Moltbook 公开帖子和评论，结果写入 `raw/crawl/`。环境要求见 `collect/README.md`，数据边界见 `docs/data-collection.md`。
+- `collect/`：按 `next_cursor` 抓取 Moltbook 公开帖子和评论，结果写入 `raw/crawl/`。环境要求见 `collect/README.md`，数据边界见 `docs/notes/data-collection.md`。
+- `prepare/`：把 `raw/crawl/` 转成 `raw/outputs/*.parquet`，见 `prepare/README.md`。
+- `analysis/`：分析代码，见 `analysis/README.md`。
