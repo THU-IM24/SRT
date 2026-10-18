@@ -34,6 +34,7 @@
 ```
 README.md        项目说明（本文件）
 AGENTS.md        协作规范与合并规则
+LOG.md           项目关键进展日志，先读它了解做到哪一步
 src/collect/     数据采集脚本
 src/prepare/     数据整理（jsonl.gz → Parquet）
 src/analysis/    分析代码
