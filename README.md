@@ -41,7 +41,7 @@ src/analysis/    分析代码
 notebooks/       探索性笔记本
 results/         可公开的小图表和汇总表
 docs/learn/      学习资料：概念页、教程页
-docs/papers/     文献笔记
+docs/papers/     文献笔记与论文 PDF
 docs/notes/      组会记录、研究设计、数据采集说明
 personal/        个人文件夹，不入库，别人看不到
 ```
