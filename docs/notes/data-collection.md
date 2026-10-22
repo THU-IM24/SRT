@@ -1,5 +1,7 @@
 # Moltbook 数据采集
 
+> 已停用（2026-10-22）：项目数据改用公开数据集 [jscmp4/Moltbook](https://huggingface.co/datasets/jscmp4/Moltbook) 的 2026-10-07 快照，放在 `/data/srt/raw/moltbook-2026-10-07/`。下文记录的是我们自己的抓取方式，只留作参考；自己抓的数据（帖子到 2026-09-30）已不在服务器上，文中的 `/data/srt/raw/crawl/` 路径不再存在。
+
 脚本：`src/collect/collect_moltbook.py`。环境要求：`src/collect/README.md`。结果目录：`/data/srt/raw/crawl/`。结果不进入版本库。
 
 ## 抓什么

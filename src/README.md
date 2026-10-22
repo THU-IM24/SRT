@@ -8,6 +8,6 @@
 
 已有代码：
 
-- `collect/`：按 `next_cursor` 抓取 Moltbook 公开帖子和评论，结果写入 `/data/srt/raw/crawl/`。环境要求见 `collect/README.md`，数据边界见 `docs/notes/data-collection.md`。
-- `prepare/`：把 `/data/srt/raw/crawl/` 转成 `/data/srt/outputs/*.parquet`，见 `prepare/README.md`。
+- `collect/`：已停用，只留作参考。原先按 `next_cursor` 抓取 Moltbook 公开帖子和评论，结果写入 `/data/srt/raw/crawl/`。环境要求见 `collect/README.md`，数据边界见 `docs/notes/data-collection.md`。
+- `prepare/`：旧的整理脚本。现在 `/data/srt/outputs/*.parquet` 由公开数据集 `/data/srt/raw/moltbook-2026-10-07/` 合并生成，见 `prepare/README.md`。
 - `analysis/`：分析代码，见 `analysis/README.md`。
