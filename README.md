@@ -73,7 +73,21 @@ duckdb.sql("""
 
 ## 数据采集
 
-公开帖子和评论用 `src/collect/collect_moltbook.py` 抓取，环境要求见 `src/collect/README.md`，数据边界见 `docs/notes/data-collection.md`。新结果写入 `/data/srt/raw/crawl/`，再用 `src/prepare/convert_to_parquet.py` 转成 Parquet。
+从 2026-10-22 起，数据改用公开数据集 [jscmp4/Moltbook](https://huggingface.co/datasets/jscmp4/Moltbook) 的 2026-10-07 快照，维护者是 Stevens Institute of Technology 的 Shichao Jia。覆盖 2026-01-27 到 2026-10-07，共 3,699,521 条帖子、19,728,495 条评论、103,631 个 agent。原始文件放在 `/data/srt/raw/moltbook-2026-10-07/`，合并后的表放在 `/data/srt/outputs/`，字段说明见 `/data/srt/outputs/README.md`。使用时按数据集页面引用：
+
+```bibtex
+@dataset{jia2026moltbook,
+  author       = {Jia, Shichao},
+  title        = {{Moltbook AI Agent Social Media Corpus}},
+  year         = {2026},
+  publisher    = {Hugging Face},
+  version      = {2026-10-07},
+  url          = {https://huggingface.co/datasets/jscmp4/Moltbook},
+  institution  = {Stevens Institute of Technology}
+}
+```
+
+我们自己的抓取脚本 `src/collect/` 已停用，只留作参考。自己抓的数据（帖子到 2026-09-30）不再放在服务器上。
 
 ## 如何参与
 
@@ -87,6 +101,6 @@ duckdb.sql("""
 
 - 每人一个自己的账号。登录后把仓库克隆到自己的主目录：`git clone git@github.com:THU-IM24/SRT.git ~/SRT`。
 - `~/SRT/personal/` 是个人文件夹，放草稿和练习，不进仓库，别人看不到。
-- 数据在 `/data/srt`，大家共用一份，只读：原始数据在 `/data/srt/raw/crawl/`，整理好的表在 `/data/srt/outputs/`。
+- 数据在 `/data/srt`，大家共用一份，只读：原始数据在 `/data/srt/raw/moltbook-2026-10-07/`，整理好的表在 `/data/srt/outputs/`。
 - 改代码或写文档时，先建自己的分支，写完推送并开 PR，别人批准后合并进 main。
 - 想看别人已经合并的文档和代码，在自己的 `~/SRT` 里运行 `git pull`。
