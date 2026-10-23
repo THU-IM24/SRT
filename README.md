@@ -54,22 +54,27 @@ personal/        个人文件夹，不入库，别人看不到
 
 ```bash
 ssh -i 你的密钥.pem 用户名@服务器IP
-conda activate srt
-cd ~/srt/code
+cd ~/SRT
+python3 --version
 ```
 
 整理好的数据在 `/data/srt/outputs/`：`posts.parquet`（帖子）和 `comments.parquet`（评论）。用 duckdb 读一下：
 
 ```python
 import duckdb
-duckdb.sql("""
+con = duckdb.connect()
+con.execute("SET memory_limit='1GB'")
+con.execute("SET threads=2")
+con.sql("""
     SELECT post_id, count(*) AS n
     FROM '/data/srt/outputs/comments.parquet'
     GROUP BY post_id ORDER BY n DESC LIMIT 5
 """).show()
 ```
 
-学习资料从 `docs/learn/` 开始看。
+2026-10-23实测环境为系统Python 3.12、DuckDB和PyArrow，旧conda路径不适用。先读[环境与数据核查教程](docs/learn/tutorials/01-核查环境与数据边界.md)。
+
+学习资料从[学习路线](docs/learn/README.md)开始看。四篇原文的术语与操作对应见[概念对照表](docs/papers/四篇论文概念对照表.md)；后续问题与候选路线见[研究计划](docs/notes/下一步研究计划.md)。
 
 ## 数据采集
 
