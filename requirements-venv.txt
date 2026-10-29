@@ -1,0 +1,20 @@
+# srt2 分析用 venv 顶层依赖（与 ~/venv-srt 对齐）。
+# 完整冻结清单在服务器私有目录 ~/srt-work/requirements-venv.lock.txt，不进仓库。
+# 创建示例：
+#   python3 -m venv ~/venv-srt
+#   source ~/venv-srt/bin/activate
+#   pip install -r requirements-venv.txt
+#   python -m ipykernel install --user --name srt --display-name srt
+
+duckdb==2.0.0
+pyarrow==26.0.0
+numpy==2.5.4
+pandas==3.1.0
+polars==2.1.0
+networkx==3.7
+igraph==1.0.0
+scipy==1.18.1
+scikit-learn==1.9.1
+matplotlib==3.11.2
+jupyterlab==4.6.4
+ipykernel==7.4.0

@@ -35,6 +35,16 @@
 - 集体形态和对话功能分开测量。不用发帖规模或网络外形代替交往。
 - 不预设结题结论。不编造数据、文献或结果。
 
+## 服务器环境（srt2）
+
+共享分析机约定，细节见 `docs/learn/tutorials/服务器上手教程.md`。
+
+- 分析用独立 venv：`source ~/venv-srt/bin/activate`；Jupyter 内核名 `srt`。顶层依赖见仓库根目录 `requirements-venv.txt`；完整锁文件在私有目录 `~/srt-work/requirements-venv.lock.txt`（不进 git）。
+- 已配置 4G swap；机器约 8G 内存，仍避免并行全量任务。
+- DuckDB：按月（或更小）时间窗读 Parquet，只选需要的列；会话设 `memory_limit`、`threads`，`temp_directory` 指向 `~/srt-work/duckdb_tmp`。图算法只跑子图，不要对全历史边一次构图。
+- 磁盘巡检：`srt-disk-check` 每 6 小时写入 `/var/log/srt-disk.log`；`/` 与 `/data` 同盘，剩余空间紧张时不要并行全量溢写。
+- 作者简介表：私有文件 `~/srt-work/derived/agents_bio.parquet`，**不进 git**。用字段 `description`，不用帖子里的空 `bio`；`agent_snapshots` 无简介字段。
+
 ## 进展日志
 
 - 开始工作前先读 `LOG.md`。
