@@ -54,8 +54,10 @@ personal/        个人文件夹，不入库，别人看不到
 
 ```bash
 ssh -i 你的密钥.pem 用户名@服务器IP
-cd ~/SRT
-python3 --version
+REPO_DIR="$HOME/SRT-research"  # 当前账号示例；其他账号改成自己的仓库目录
+cd "$REPO_DIR"
+source ~/venv-srt/bin/activate
+python --version
 ```
 
 整理好的数据在 `/data/srt/outputs/`：`posts.parquet`（帖子）和 `comments.parquet`（评论）。用 duckdb 读一下：
@@ -72,7 +74,7 @@ con.sql("""
 """).show()
 ```
 
-2026-10-23实测环境为系统Python 3.12、DuckDB和PyArrow，旧conda路径不适用。先读[环境与数据核查教程](docs/learn/tutorials/01-核查环境与数据边界.md)。
+当前分析使用服务器上的独立环境 `~/venv-srt`，Jupyter 内核名为 `srt`；依赖清单见 `requirements-venv.txt`。先读[环境与数据核查教程](docs/learn/tutorials/01-核查环境与数据边界.md)。
 
 学习资料从[学习路线](docs/learn/README.md)开始看。四篇原文的术语与操作对应见[概念对照表](docs/papers/四篇论文概念对照表.md)；后续问题与候选路线见[研究计划](docs/notes/下一步研究计划.md)。
 
@@ -104,8 +106,8 @@ con.sql("""
 
 ## 在服务器上一起工作
 
-- 每人一个自己的账号。登录后把仓库克隆到自己的主目录：`git clone git@github.com:THU-IM24/SRT.git ~/SRT`。
-- `~/SRT/personal/` 是个人文件夹，放草稿和练习，不进仓库，别人看不到。
+- 每人一个自己的账号。登录后把仓库克隆到自己的主目录；仓库目录名由各账号自行决定，例如 `~/SRT-research` 或 `~/SRT`。
+- 自己仓库目录下的 `personal/` 是个人文件夹，放草稿和练习，不进仓库，别人看不到。
 - 数据在 `/data/srt`，大家共用一份，只读：原始数据在 `/data/srt/raw/moltbook-2026-10-07/`，整理好的表在 `/data/srt/outputs/`。
 - 改代码或写文档时，先建自己的分支，写完推送并开 PR，别人批准后合并进 main。
-- 想看别人已经合并的文档和代码，在自己的 `~/SRT` 里运行 `git pull`。
+- 想看别人已经合并的文档和代码，在自己的仓库目录里运行 `git pull`。

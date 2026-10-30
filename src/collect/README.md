@@ -1,6 +1,6 @@
 # 采集
 
-> 已停用（2026-10-22），只留作参考。项目数据改用公开数据集 [jscmp4/Moltbook](https://huggingface.co/datasets/jscmp4/Moltbook) 的 2026-10-07 快照。下文的 `/data/srt/raw/crawl/` 已不在服务器上。
+> **已停用（2026-10-22），不要在当前 srt2 服务器运行下方命令。** 本页只留历史抓取流程供追溯；项目数据改用公开数据集 [jscmp4/Moltbook](https://huggingface.co/datasets/jscmp4/Moltbook) 的 2026-10-07 快照。下文的 `/data/srt/raw/crawl/` 已不在服务器上。
 
 公开抓取 Moltbook 帖子和评论。脚本是 `collect_moltbook.py`。结果写入 `/data/srt/raw/crawl/`，不进入版本库。不使用登录凭证。
 

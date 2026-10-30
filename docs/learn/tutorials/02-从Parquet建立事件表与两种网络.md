@@ -1,69 +1,105 @@
-# 02 从Parquet建立事件表与两种网络
+# 02 从 Parquet 建立事件表与两种网络
 
-**目标**：在限定时间窗内建立事件表、主网络和直接回复网络，保留无法解析的情况。
+**版本**：2026-10-30 复核版
+**目标**：在明确的 UTC 时间窗内建立事件表、主网络和直接回复网络，并保留无法解析的事件状态。
 **先读**：[网络边定义](../concepts/网络边定义.md)、[度与强度](../concepts/度与强度.md)、[互惠性](../concepts/互惠性.md)。
 
-## 1. 先手算三条评论
+## 1. 先手算，再跑测试
 
-帖子P由A发布。B评论帖子，C回复B，A回复C。事件表保留三条。主网络得到B→A、C→A，去掉A→A。直接回复网络得到B→A、C→B、A→C。帖主的评论虽然不进主网络，仍然留在事件表中用于回楼指标。
+帖子 P 由 A 发布，B 评论帖子，C 回复 B，A 回复 C。事件表保留三条：
 
-这也是脚本测试的重点。先运行合成数据检查：
+- 主网络：`B→A`、`C→A`；帖主 A 的自评不进入主网络。
+- 直接回复网络：`B→A`、`C→B`、`A→C`；帖主回楼保留。
 
-```bash
-cd ~/SRT
-python3 -m unittest discover -s src/analysis -p 'test_*.py' -v
-```
-
-检查覆盖跨时间窗父评论、帖主回复、缺失父节点、自环、spam敏感性、半开时间窗及不覆盖旧输出。它们验证规则，不是在合成数据上证明研究发现。
-
-## 2. 选择窗口
-
-下面用UTC的2026年9月，左闭右开。选择的是评论发生时间，不是帖子创建时间。9月评论可能指向2月帖子，所以帖子和父评论查找必须使用全体输入，不能一起裁成9月。
+两张网络不是谁“更真实”，而是回答不同问题。先跑合成测试：
 
 ```bash
-python3 src/analysis/build_analysis_tables.py   --start 2026-09-01T00:00:00Z   --end 2026-10-01T00:00:00Z   --out ~/srt-work/september-clean
+REPO_DIR="$HOME/SRT-research"  # 按你的账号实际目录修改
+cd "$REPO_DIR"
+source ~/venv-srt/bin/activate
+python -m unittest discover -s src/analysis -p 'test_*.py' -v
 ```
 
-输出目录必须在公共数据与公开仓库之外，而且必须是新目录。脚本默认1GB、2线程，临时溢写上限5GB。大任务放tmux，一次运行一份。
+测试覆盖跨窗口父节点、帖主回复、自环、缺父、平台标记、半开时间窗和禁止覆盖旧输出。合成测试只验证代码规则，不证明真实社区结论。
 
-## 3. 理解三个文件
+## 2. 选择窗口，但不要截断父节点查找
+
+时间窗按评论的动作时间选择，采用左闭右开 `[start, end)`；评论发生在9月但可以指向2月帖子。帖子和父评论必须从**全体输入表**查找，不能把它们一起裁成9月。
+
+以下命令是可执行的9月示例；输出目录必须是自己的新目录：
+
+```bash
+REPO_DIR="$HOME/SRT-research"  # 按你的账号实际目录修改
+cd "$REPO_DIR"
+source ~/venv-srt/bin/activate
+python src/analysis/build_analysis_tables.py \
+  --start 2026-09-01T00:00:00Z \
+  --end 2026-10-01T00:00:00Z \
+  --memory 1GB \
+  --threads 2 \
+  --out ~/srt-work/september-clean-$(date +%Y%m%d-%H%M%S)
+```
+
+大任务放 tmux，一次只跑一份全量窗口。脚本默认最多使用5GB临时溢写；`/` 与 `/data` 同盘，先用 `df -h` 检查空间。
+
+## 3. 读取四个输出
 
 | 文件 | 一行是什么 | 用于什么 |
 |---|---|---|
-| `events.parquet` | 窗口内的一条评论，含解析状态与标记 | 核对事件、筛选、回楼、后续抽样 |
-| `main_edges.parquet` | 评论者src→帖作者dst及次数 | README规定的主网络 |
-| `reply_edges.parquet` | 回复者src→实际父消息作者dst及次数 | 直接回复关系 |
-| `manifest.json` | 参数、计数、网络汇总 | 复现和检查 |
+| `events.parquet` | 窗口内一条评论及解析状态 | 核对事件、过滤、回楼和抽样 |
+| `main_edges.parquet` | 评论者 `src` → 帖子作者 `dst`，含次数 | 项目主网络 |
+| `reply_edges.parquet` | 回复者 `src` → 实际父消息作者 `dst`，含次数 | 直接回复关系 |
+| `manifest.json` | 参数、输入、状态计数和网络汇总 | 复现、审计和比较 |
 
-事件表不导出正文。`source_depth`是原数据的depth，不能当作重建树深。`event_status`包括valid、缺帖、缺账号、时间异常等。`reply_status`包括顶层、已解析父节点、缺父节点、跨帖、父节点时间异常等。缺父节点的事件若其他字段合格，仍可进入主网络，但不能进入直接回复网络。
+`events.parquet`只包含事件时间落在窗口内的评论；父节点查找仍使用全评论表。`source_depth`是原数据字段，不是重建树深。`event_status`至少区分 `valid`、缺帖子、缺作者和时间异常；`reply_status`区分顶层、已解析父节点、缺父、跨帖和时间异常。
 
-## 4. 清洗规则是什么
+缺父的事件若其他字段合格，仍可进入主网络，但不能进入直接回复网络。正式祖先遍历见[04 回复树](04-核对回复树与帖主回应.md)，本脚本不声称已完成全祖先环检查。
 
-当前可执行基线要求帖子和评论账号ID非空、帖子可连接、时间有效且评论不早于帖子。主网络去自评；直接回复网络去回复同一账号的自环。默认排除平台标为spam或deleted的评论及其帖子；楼中楼还排除标为spam/deleted的父评论。
+## 4. 当前可执行基线
 
-这是预先声明的分析选择，不是真实spam金标准。事件表保留所有选中事件和标记，便于追踪排除原因。脚本不保证全祖先链无环，也不分析语义。正式树形分析还要完成04教程的检查。
+默认基线要求帖子、评论作者ID非空，帖子存在，时间可解析且评论不早于帖子；主网络去评论者与帖主相同的自评；直接回复网络去回复同一账号的自环。默认排除平台标记为 `spam` 或 `deleted` 的评论及帖子，直接回复还排除被标记的父评论。
 
-## 5. 做一份不过滤标记的对照
+这只是预先声明的可重复过滤，不是 spam 的真实金标准。事件表保留状态和标记，便于敏感性分析；不要把默认过滤后的图叫“完整原始图”。
+
+## 5. 做平台标记敏感性对照
 
 ```bash
-python3 src/analysis/build_analysis_tables.py   --start 2026-09-01T00:00:00Z   --end 2026-10-01T00:00:00Z   --keep-flagged --out ~/srt-work/september-all-flags
+source ~/venv-srt/bin/activate
+python src/analysis/build_analysis_tables.py \
+  --start 2026-09-01T00:00:00Z \
+  --end 2026-10-01T00:00:00Z \
+  --keep-flagged \
+  --out ~/srt-work/september-keep-flagged-$(date +%Y%m%d-%H%M%S)
 ```
 
-“不过滤平台标记”仍然保留缺ID、错误时间、自环等基础有效性规则，不能称为完全原始网络。比较两份manifest的节点、二值边、权重和互惠。若差异大，先报告样本构成，不急着解释为行为变化。
+`--keep-flagged`仍会排除缺ID、错误时间和自环，所以它不是完全原始网络。比较两个 manifest 的节点数、二值边数、事件权重、互惠和状态计数；若差异明显，先报告样本构成，不急着解释为行为变化。
 
-## 6. 用SQL检查
+## 6. 用 DuckDB 做最低验收
 
-```python
+把 `<本次目录>` 替换成实际绝对路径。只读汇总，不打印账号排名：
+
+```bash
+source ~/venv-srt/bin/activate
+OUT="$HOME/srt-work/september-clean-20261030"  # 改成你本次实际输出目录
+test -d "$OUT"
+mkdir -p "$OUT/duckdb_tmp"
+OUT="$OUT" python - <<'PY'
+import os
 from pathlib import Path
 import duckdb
-con=duckdb.connect()
+
+out = Path(os.environ['OUT']).resolve()
+con = duckdb.connect()
 con.execute("SET memory_limit='1GB'")
 con.execute("SET threads=2")
-e = str(Path.home()/'srt-work/september-clean/main_edges.parquet')
-con.read_parquet(e).create_view('edges')
-con.sql('SELECT count(*) AS binary_edges,sum(weight) AS comment_events FROM edges').show()
-con.sql('SELECT count(*) FROM edges WHERE src=dst OR src IS NULL OR dst IS NULL').show()
-con.sql('SELECT src,dst,count(*) FROM edges GROUP BY 1,2 HAVING count(*)>1').show()
+con.execute("SET temp_directory = ?", [str(out / 'duckdb_tmp')])
+con.read_parquet(str(out / 'main_edges.parquet')).create_view('e')
+con.sql('SELECT count(*) AS binary_edges, sum(weight) AS comment_events FROM e').show()
+con.sql('SELECT count(*) AS bad FROM e WHERE src=dst OR src IS NULL OR dst IS NULL').show()
+con.sql('SELECT count(*) AS duplicate_pairs FROM (SELECT src,dst,count(*) FROM e GROUP BY 1,2 HAVING count(*)>1)').show()
+PY
 ```
 
-后两个结果应分别为0和空表。不要将原事件的条数与二值边数混淆。下一步读[03 结构与互惠基线](03-计算结构与互惠基线.md)。
+最后两个结果应为0。二值边数、事件权重和节点数必须分开报告，不能用其中一个替代另一个。
+
+下一步读[03 计算结构与互惠基线](03-计算结构与互惠基线.md)。

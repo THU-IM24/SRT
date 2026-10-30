@@ -18,3 +18,4 @@ scikit-learn==1.9.1
 matplotlib==3.11.2
 jupyterlab==4.6.4
 ipykernel==7.4.0
+pytz==2026.6
