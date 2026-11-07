@@ -20,6 +20,10 @@
 | `02-SBP-BRiMS-Twitter-LLMBotsRealistic.pdf` | Are LLM-Powered Social Media Bots Realistic? | Lynnette Hui Xian Ng, Kathleen M. Carley | 2026 | SBP-BRiMS 2025, LNCS 16127, pp. 14–23 | Twitter/X（模拟） | Springer 版权所有 | [doi:10.1007/978-3-032-07715-8_2](https://doi.org/10.1007/978-3-032-07715-8_2) |
 | `03-Passau-Moltbook-FormWithoutFunction.pdf` | Form Without Function: Agent Social Behavior in the Moltbook Network | Saber Zerhoudi et al.（共 12 人） | 2026 | arXiv 预印本（University of Passau） | Moltbook | CC BY 4.0 | [arXiv:2604.13052](https://arxiv.org/abs/2604.13052) |
 | `04-Konstanz-Moltbook-CollectiveBehavior.pdf` | Collective Behavior of AI Agents: the Case of Moltbook | Giordano De Marzo, Andres L. Marin, David Garcia | 2026 | arXiv 预印本（University of Konstanz） | Moltbook | CC BY 4.0 | [arXiv:2602.09270](https://arxiv.org/abs/2602.09270)（v2） |
+| `05-Calgary-Moltbook-TechnicalDiscourse.pdf` | What Software Engineering Looks Like to AI Agents? — An Empirical Study of AI-Only Technical Discourse on MoltBook | Junyu Huo et al. | 2026 | arXiv v2（University of Calgary） | Moltbook、GitHub Discussions | CC BY 4.0 | [arXiv:2605.08380v2](https://arxiv.org/abs/2605.08380v2) |
+| `06-CMU-Moltbook-PeerLearning.pdf` | When AI Agents Teach Each Other: Discourse Patterns Resembling Peer Learning in the Moltbook Community | Eason Chen et al. | 2026 | arXiv v2（Carnegie Mellon University） | Moltbook | CC BY 4.0 | [arXiv:2602.14477v2](https://arxiv.org/abs/2602.14477v2) |
+| `07-JMIR-HealthQA-InformationQuality.pdf` | You Get What You Pay for on Health Care Question and Answer Platforms: Nonparticipant Observational Study | Fatemeh Ameri, Kathleen Keeling, Reza Salehnejad | 2020 | JMIR 22(1):e13534 | 健康问答平台 | CC BY 4.0；© Ameri et al. | [doi:10.2196/13534](https://doi.org/10.2196/13534)；[出版社](https://www.jmir.org/2020/1/e13534) |
+| `08-BehavSci-Zhihu-KnowledgeContribution.pdf` | Examining the Effect of Knowledge Seeking on Knowledge Contribution in Q&A Communities | Junping Qiu et al. | 2024 | Behavioral Sciences 14(9):853 | 知乎 | CC BY 4.0 | [doi:10.3390/bs14090853](https://doi.org/10.3390/bs14090853) |
 
 ## 笔记模板
 
@@ -44,3 +48,4 @@
 - [04 De Marzo：Moltbook集体行为v2](DeMarzo-2026-Moltbook集体行为.md)
 - [四篇论文概念对照表](四篇论文概念对照表.md)：章节、概念、教程、实施边界。
 - [补充文献与方向重合核查](../notes/文献检索与方向重合核查-2026-10-23.md)：已核读范围和仍待对齐的近邻。
+- [信息系统视角补充四篇（2026-11-08）](2026-11-08-信息系统视角文献.md)：两篇 Moltbook 近邻及两篇人类问答研究，附逐篇笔记与全文。
