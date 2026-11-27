@@ -4,7 +4,7 @@
 
 仓库为公开仓库，位于组织 `THU-IM24` 下。提交到本仓库的内容对所有人可见，且不可收回；不要把原始数据、未定结论或本机信息写进来。
 
-研究问题、数据定义和时间以 `README.md` 为准；2026-11-15 起研究方向调整为“同样的文字，不同的命运”（待导师／组会确认，详见 `docs/notes/下一步研究计划.md`），旧主线已归档在 `docs/notes/archive/`，不要把归档计划当作当前任务。不在本文件重复导师简介。
+项目概况、数据下载方式与目录说明见 `README.md`。不在本文件重复导师简介。
 
 ## 协作
 
@@ -15,45 +15,33 @@
 - `main` 已开启分支保护：要求 Pull Request、要求 1 个批准、禁止强推和删除分支。仓库 owner 保留管理员直推权限，方便本地收尾；其他协作者只有 Write，无法直接推送 `main`。若把协作者改成 Admin 或 Owner，等于一并给了他直推权限，不要再给。
 - 智能体不代为创建远程、邀请协作者、修改权限或合并 Pull Request，除非 `feiys22` 当次明确要求。
 
-## 执行
+## 本地运行与数据获取
 
-- 主分析和大图计算在本机或云服务器执行，不把 GitHub Actions 当作主计算环境。
-- Actions 只用于格式检查、小样本测试和可复现性核验。
-- 不把密钥、原始数据和可重新生成的大结果放进 Actions 日志或仓库。
+- 所有分析在各自本机完成，不把 GitHub Actions 当作主计算环境；Actions 只用于格式检查和小样本测试。
+- 主数据为公开数据集 [jscmp4/Moltbook](https://huggingface.co/datasets/jscmp4/Moltbook)（2026-10-07 快照），各自按 `README.md` 说明下载 `parquet/posts/*`、`parquet/comments/*`、`parquet/agents/*`（共约 3.63 GB）到仓库外的本地目录。
+- Python 依赖见仓库根目录 `requirements-venv.txt`。分析脚本使用 DuckDB 读取本地 Parquet，路径通过环境变量 `SRT_DATA_DIR` 或命令行参数传入，**不在代码里写死个人本机绝对路径**。
+- 输出的大文件和派生中间表一律放在仓库外的本地目录，不进仓库。
 
 ## 不要提交
 
 - `personal/` 中除 `personal/README.md` 以外的文件。`.gitignore` 已排除 `personal/**`。
 - `.env`、密钥、令牌、本机编辑器状态。
-- `/data/srt/outputs/` 中可重新生成的产物。目录说明 `/data/srt/outputs/README.md` 可以保留。
+- 原始数据文件（`.parquet`、`.jsonl` 等）及可重新生成的大产物。
 - 其他本机目录中的草稿。未明确要求，不从仓库外复制文件进来。
 
 ## 数据与结论
 
-- 主数据为 Moltbook，2026-10-22 起用公开数据集 jscmp4/Moltbook 2026-10-07 快照（`/data/srt/raw/moltbook-2026-10-07/`，合并表在 `/data/srt/outputs/`），引用方式见 `README.md`。`src/collect/` 已停用。边定义为评论者指向帖作者，去除自评。
-- 写清数据覆盖、缺失与采集偏差。不把单一快照写成社区全貌。
-- 当前主线（待确认）：把内容（完全相同的帖子文本）或人设（完全相同的简介）固定，分解成败的来源。点赞、评论数和 karma 都是**抓取时的累计值**，不是事件发生时的值，不能当事前变量；没有 feed 曝光日志。预备结果只是描述性的，见 `docs/notes/预备分析-2026-11-15.md`。
-- 只写关联与分解，不写因果；不宣称“首次”。LLM 版 Music Lab 的受控实验已有（见 `docs/literature/`）。
-- 批量创建的账号、铸币／自动化账号、平台 spam 标记要单独处理，不与独立采用的混为一谈。
-- 仓库只放聚合数字、方法与虚构示例。不放帖子正文、账号 ID、简介明细、同文组或克隆家族清单。
-- 旧主线（结构层与对话层、内容承接的人工双标）仍可作为背景与数据基础，沿用“集体形态和对话功能分开测量”的纪律；但它不再是当前任务。
-- 不预设结题结论。不编造数据、文献或结果。
-
-## 服务器环境（srt2）
-
-共享分析机约定，细节见 `docs/learn/tutorials/服务器上手教程.md`。
-
-- 分析用独立 venv：`source ~/venv-srt/bin/activate`；Jupyter 内核名 `srt`。顶层依赖见仓库根目录 `requirements-venv.txt`；完整锁文件在私有目录 `~/srt-work/requirements-venv.lock.txt`（不进 git）。
-- 已配置 4G swap；机器约 8G 内存，仍避免并行全量任务。
-- DuckDB：按月（或更小）时间窗读 Parquet，只选需要的列；会话设 `memory_limit`、`threads`，`temp_directory` 指向 `~/srt-work/duckdb_tmp`。图算法只跑子图，不要对全历史边一次构图。
-- 磁盘巡检：`srt-disk-check` 每 6 小时写入 `/var/log/srt-disk.log`；`/` 与 `/data` 同盘，剩余空间紧张时不要并行全量溢写。
-- 作者简介表：私有文件 `~/srt-work/derived/agents_bio.parquet`，**不进 git**。用字段 `description`，不用帖子里的空 `bio`；`agent_snapshots` 无简介字段。
+- 写清数据覆盖、缺失与采集偏差，不把单一快照写成社区全貌。基础数据核查见 `docs/notes/当前数据核查-2026-10-23.md`。
+- 点赞、评论数和 karma 都是**抓取时的累计值**，不是事件发生时的值，没有 feed 曝光日志。
+- 观察数据只写关联与描述，不随意宣称因果或“首次”。
+- 批量创建账号、铸币／自动化账号、平台 spam/deleted 标记应单独处理，不与普通互动混为一谈。
+- 仓库只放聚合数字、方法与虚构示例；不放原始帖子正文、账号 ID 明细或未脱敏记录。
+- 不预设结题结论，不编造数据、文献或结果。
 
 ## 文献
 
-- 重点文献放在 `docs/literature/`：一篇一份中文短笔记，英文标题与作者，附可核对的链接。只写核对过的文献，不编造引用；笔记须注明依据的是摘要还是全文。
-- PDF 只在许可允许转载时才提交（arXiv 摘要页标注 CC BY 等）。arXiv 默认许可或出版社版权的论文只放链接和笔记。提交 PDF 要在 `docs/literature/pdf/README.md` 写明来源与许可。
-- 早期文献笔记与 PDF 在 `docs/papers/`，不动。
+- 核心文献统一放在 `docs/papers/`：一篇一份中文短笔记，附英文标题、作者与可核对链接，注明核读程度（摘要还是全文）。
+- PDF 只在许可允许转载时才提交（如 arXiv 标注 CC BY 4.0），存放在 `docs/papers/pdf/` 并在 `docs/papers/pdf/README.md` 写明来源与许可；非开放许可的论文只放链接和笔记。
 
 ## 进展日志
 

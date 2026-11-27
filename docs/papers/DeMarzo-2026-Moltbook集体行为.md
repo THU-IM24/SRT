@@ -2,7 +2,7 @@
 
 - 编号：04。Giordano De Marzo、Andres L. Marin、David Garcia。
 - 仓库原文为arXiv:2602.09270v2，版本记录2026-10-07；PDF封面写October 8。
-- [arXiv版本入口](https://arxiv.org/abs/2602.09270v2)、[HTML](https://arxiv.org/html/2602.09270v2)。原文：`04-Konstanz-Moltbook-CollectiveBehavior.pdf`。
+- [arXiv版本入口](https://arxiv.org/abs/2602.09270v2)、[HTML](https://arxiv.org/html/2602.09270v2)。原文：[PDF](pdf/DeMarzo-2026-CollectiveBehavior-arXiv2602.09270v2.pdf)。
 - 阅读范围：全文与附录A.1–A.4。不能用搜索引擎的v1摘要代替v2。
 
 ## 数据与我们不同
@@ -28,5 +28,3 @@ v2明确讨论早期规律与全期不同：全期评论规模尾部不必是纯
 γ(t)是累计评论比值的平均相对增长，不是绝对新增评论率。深宽都用√n归一化，可能引入共同分母关联，应同时看原始d(n)、w(n)。树形相似不直接说明评论在承接彼此；结构和时序仍需语义层验证。
 
 **复习问题**：为什么“只有少数帖不完整”不代表“只损失少量评论”？为什么两个论文都说讨论浅，却可能报告不同平坦率？
-
-[概念与教程对应表](四篇论文概念对照表.md)

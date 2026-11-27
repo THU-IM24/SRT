@@ -1,11 +1,13 @@
 """Read-only, memory-bounded audit of the published Moltbook snapshot.
 
-Run with Python 3.12 + DuckDB on the server. Only aggregate JSON is written.
+Run locally with DuckDB. Only aggregate JSON is written.
 No text, account identifiers, or original records are exported.
 """
 import argparse
 import datetime as dt
+import glob
 import json
+import os
 from pathlib import Path
 import time
 
@@ -16,26 +18,30 @@ def literal(value):
     return "'" + str(value).replace("'", "''") + "'"
 
 
+def default_parquet(table):
+    base = Path(os.environ.get('SRT_DATA_DIR', '.'))
+    return str(base / 'parquet' / table / '*.parquet')
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--posts', default='/data/srt/outputs/posts.parquet')
-    ap.add_argument('--comments', default='/data/srt/outputs/comments.parquet')
+    ap.add_argument('--posts', default=default_parquet('posts'))
+    ap.add_argument('--comments', default=default_parquet('comments'))
     ap.add_argument('--out', type=Path, required=True)
-    ap.add_argument('--memory', default='1GB')
-    ap.add_argument('--threads', type=int, default=2)
+    ap.add_argument('--memory', default='4GB')
+    ap.add_argument('--threads', type=int, default=4)
     args = ap.parse_args()
     out = args.out.expanduser().resolve()
-    raw = Path('/data/srt').resolve()
     repo = Path(__file__).resolve().parents[2]
-    if out == raw or raw in out.parents or out == repo or repo in out.parents:
-        raise ValueError('Output must be outside shared data and the public repository')
+    if out == repo or repo in out.parents:
+        raise ValueError('Output must be outside the public repository')
     out.mkdir(parents=True, exist_ok=True)
     con = duckdb.connect()
     con.execute("SET TimeZone='UTC'")
     con.execute(f'SET memory_limit={literal(args.memory)}')
     con.execute(f'SET threads={int(args.threads)}')
     con.execute(f'SET temp_directory={literal(out / "spill")}')
-    con.execute("SET max_temp_directory_size='5GB'")
+    con.execute("SET max_temp_directory_size='10GB'")
     con.execute('SET preserve_insertion_order=false')
     for name, path in [('posts', args.posts), ('comments', args.comments)]:
         con.execute(f'CREATE VIEW {name} AS SELECT * FROM read_parquet({literal(path)})')
@@ -54,8 +60,10 @@ def main():
                         'filters': 'none; this is an audit, not a cleaned population'},
     }
     for name, path in [('posts', args.posts), ('comments', args.comments)]:
-        f = Path(path)
-        report['inputs'][name] = {'path': str(f), 'bytes': f.stat().st_size,
+        matched = [Path(p) for p in glob.glob(str(path))] or [Path(path)]
+        report['inputs'][name] = {'path': str(path),
+            'files': len(matched),
+            'bytes': sum(f.stat().st_size for f in matched if f.exists()),
             'schema': con.execute(f'DESCRIBE {name}').fetchall()}
 
     def save():

@@ -33,5 +33,8 @@ Thumbs.db
 personal/**
 !personal/README.md
 
-# 数据统一放在服务器 /data/srt，不进仓库；万一在仓库里生成也不上传
+# 原始数据与大型产物放在仓库外的本地目录，不进仓库
 raw/
+*.parquet
+*.jsonl
+*.jsonl.gz

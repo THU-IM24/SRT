@@ -1,13 +1,9 @@
-# src —— 分析与图计算代码
+# src —— 分析代码
 
-本目录存放结构层与对话层的分析与图计算代码，包括评论互动网的构建、网络指标计算和评论功能编码脚本。
+- 代码以 Python 为主，依赖见仓库根目录 `requirements-venv.txt`。
+- 数据路径通过环境变量 `SRT_DATA_DIR` 或命令行参数传入，不在代码里写死本机路径。
+- 原始数据与大型中间产物放在仓库外，不提交。
 
-- 代码以 Python 为主。采集依赖写在 `collect/requirements.txt`，不放仓库根目录。
-- 不把原始数据和可重新生成的产物放进本目录。
-- 修改通过 Pull Request 提交，`main` 由 `feiys22` 审核后合并。
+目录：
 
-已有代码：
-
-- `collect/`：已停用，只留作参考。原先按 `next_cursor` 抓取 Moltbook 公开帖子和评论，结果写入 `/data/srt/raw/crawl/`。环境要求见 `collect/README.md`，数据边界见 `docs/notes/data-collection.md`。
-- `prepare/`：旧的整理脚本。现在 `/data/srt/outputs/*.parquet` 由公开数据集 `/data/srt/raw/moltbook-2026-10-07/` 合并生成，见 `prepare/README.md`。
-- `analysis/`：分析代码，见 `analysis/README.md`。
+- `analysis/`：数据核查与基础表构建脚本，见 [analysis/README.md](analysis/README.md)。
