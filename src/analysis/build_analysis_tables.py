@@ -10,20 +10,19 @@ from pathlib import Path
 
 import duckdb
 
-from audit_snapshot import literal
+from audit_snapshot import default_parquet, literal
 
 
-def build(posts, comments, out, start, end, memory='1GB', threads=2,
+def build(posts, comments, out, start, end, memory='4GB', threads=4,
           keep_flagged=False):
     start_dt = dt.datetime.fromisoformat(start.replace('Z', '+00:00'))
     end_dt = dt.datetime.fromisoformat(end.replace('Z', '+00:00'))
     if start_dt.tzinfo is None or end_dt.tzinfo is None or start_dt >= end_dt:
         raise ValueError('Use increasing ISO timestamps with explicit UTC offsets')
     out = Path(out).expanduser().resolve()
-    shared = Path('/data/srt').resolve()
     repo = Path(__file__).resolve().parents[2]
-    if out == shared or shared in out.parents or out == repo or repo in out.parents:
-        raise ValueError('Write derived data outside shared data and the public repository')
+    if out == repo or repo in out.parents:
+        raise ValueError('Write derived data outside the public repository')
     out.mkdir(parents=True, exist_ok=True)
     targets = [out / (n + '.parquet') for n in ['events', 'main_edges', 'reply_edges']]
     if any(p.exists() for p in targets) or (out / 'manifest.json').exists():
@@ -118,13 +117,13 @@ def build(posts, comments, out, start, end, memory='1GB', threads=2,
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument('--posts', default='/data/srt/outputs/posts.parquet')
-    ap.add_argument('--comments', default='/data/srt/outputs/comments.parquet')
+    ap.add_argument('--posts', default=default_parquet('posts'))
+    ap.add_argument('--comments', default=default_parquet('comments'))
     ap.add_argument('--start', required=True)
     ap.add_argument('--end', required=True)
     ap.add_argument('--out', required=True)
-    ap.add_argument('--memory', default='1GB')
-    ap.add_argument('--threads', type=int, default=2)
+    ap.add_argument('--memory', default='4GB')
+    ap.add_argument('--threads', type=int, default=4)
     ap.add_argument('--keep-flagged', action='store_true')
     a = ap.parse_args()
     result = build(a.posts,a.comments,a.out,a.start,a.end,a.memory,a.threads,a.keep_flagged)

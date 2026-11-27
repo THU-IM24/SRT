@@ -1,53 +1,17 @@
-# papers —— 文献笔记与论文 PDF
+# 核心论文（7 篇）
 
-> 2026-11-15 起，新方向的重点文献放在 [../literature/](../literature/README.md)（短笔记＋许可允许的 PDF），本目录保留早期笔记与 PDF，不动。
+本目录精选 7 篇与 Moltbook 及大模型智能体社区最直接相关的论文，每篇附中文短笔记与 CC BY 4.0 原文 PDF（见 [pdf/](pdf/README.md)）。
 
-一篇文献一个 md 笔记，文件名用 `第一作者-年份-短标题.md`。
+## 推荐阅读顺序
 
-## 论文 PDF
+| 序号 | 论文 | 关注点 | 笔记 | PDF |
+|---:|---|---|---|---|
+| 1 | **Form Without Function: Agent Social Behavior in the Moltbook Network**（Zerhoudi 等，2026） | Moltbook 互动、内容与指令的全景研究 | [笔记](Zerhoudi-2026-形式与功能.md) | [PDF](pdf/Zerhoudi-2026-FormWithoutFunction-arXiv2604.13052v1.pdf) |
+| 2 | **Collective Behavior of AI Agents: the Case of Moltbook**（De Marzo 等，2026） | 规模分布、讨论树与注意力时间衰减基线 | [笔记](DeMarzo-2026-Moltbook集体行为.md) | [PDF](pdf/DeMarzo-2026-CollectiveBehavior-arXiv2602.09270v2.pdf) |
+| 3 | **The Platform Is Mostly Not a Platform: Token Economies and Agent Discourse on Moltbook**（Ayan，2026） | 铸币交易层与自然语言话语层的分离（数据清洗必看） | [笔记](Ayan-2026-平台多半不是平台.md) | [PDF](pdf/Ayan-2026-NotAPlatform-arXiv2604.21295v1.pdf) |
+| 4 | **The Anatomy of the Moltbook Social Graph**（Holtz，2026） | 早期社交图、浅层对话与精确模板重复 | [笔记](Holtz-2026-Moltbook社交图.md) | [PDF](pdf/Holtz-2026-MoltbookSocialGraph-arXiv2602.10131v1.pdf) |
+| 5 | **Let There Be Claws: An Early Social Network Analysis of AI Agents on Moltbook**（Price 等，2026） | 点赞与发帖集中度、早期社交网络基线 | [笔记](Price-2026-Moltbook早期网络.md) | [PDF](pdf/Price-2026-LetThereBeClaws-arXiv2602.20044v1.pdf) |
+| 6 | **Social Simulacra in the Wild: AI Agent Communities on Moltbook**（Goyal 等，2026） | Moltbook 与 Reddit 对比、共同作者造成的表面同质 | [笔记](Goyal-2026-社会拟像.md) | [PDF](pdf/Goyal-2026-SocialSimulacra-arXiv2603.16128v3.pdf) |
+| 7 | **Behavioral Determinants of Deployed AI Agents in Social Networks**（Wilson 等，2026） | 人设、模型与规则配置对智能体行为的影响 | [笔记](Wilson-2026-配置决定行为.md) | [PDF](pdf/Wilson-2026-BehavioralDeterminants-arXiv2605.08463v2.pdf) |
 
-论文 PDF 可以直接提交到本目录，和笔记一起走 PR。文件名统一为 `序号-发表处或第一作者单位-研究平台-短标题.pdf`：
-
-- **序号**：两位数，按入库顺序递增，如 `01`、`02`。
-- **发表处**：已发表或已录用的写期刊或会议的常用简称，如 `ICWSM`、`CSCW`、`DIM`；只是预印本的写第一作者单位简称，如 `CMU`、`Passau`。
-- **研究平台**：论文研究的网络平台，如 `Moltbook`、`Twitter`、`Reddit`。
-- **短标题**：从论文标题里取 2–3 个英文关键词，首字母大写直接连写（驼峰），如 `CollectiveBehaviors`、`FormWithoutFunction`。
-- 只用英文字母、数字和连字符，不要空格。例如 `01-DIM-Chirper-CollectiveBehaviors.pdf`。
-
-**关于版权**：仓库是公开的，任何人都能下载这里的 PDF。团队决定出版社版权所有的正式版本（比如 Springer 的会议论文）也一起提交，方便组员直接阅读。表里的"许可证"一栏要如实写明授权或版权归属。
-
-| 文件 | 标题 | 作者 | 年份 | 发表处 | 研究平台 | 许可证 | 链接 |
-|---|---|---|---|---|---|---|---|
-| `01-DIM-Chirper-CollectiveBehaviors.pdf` | Unveiling the collective behaviors of large language model-based autonomous agents in an online community: A social network analysis perspective | Huiru Chen, Zhenhua Wang, Ming Ren | 2026 | Data and Information Management, 10, 100107 | Chirper | CC BY-NC-ND 4.0 | [doi:10.1016/j.dim.2025.100107](https://doi.org/10.1016/j.dim.2025.100107) |
-| `02-SBP-BRiMS-Twitter-LLMBotsRealistic.pdf` | Are LLM-Powered Social Media Bots Realistic? | Lynnette Hui Xian Ng, Kathleen M. Carley | 2026 | SBP-BRiMS 2025, LNCS 16127, pp. 14–23 | Twitter/X（模拟） | Springer 版权所有 | [doi:10.1007/978-3-032-07715-8_2](https://doi.org/10.1007/978-3-032-07715-8_2) |
-| `03-Passau-Moltbook-FormWithoutFunction.pdf` | Form Without Function: Agent Social Behavior in the Moltbook Network | Saber Zerhoudi et al.（共 12 人） | 2026 | arXiv 预印本（University of Passau） | Moltbook | CC BY 4.0 | [arXiv:2604.13052](https://arxiv.org/abs/2604.13052) |
-| `04-Konstanz-Moltbook-CollectiveBehavior.pdf` | Collective Behavior of AI Agents: the Case of Moltbook | Giordano De Marzo, Andres L. Marin, David Garcia | 2026 | arXiv 预印本（University of Konstanz） | Moltbook | CC BY 4.0 | [arXiv:2602.09270](https://arxiv.org/abs/2602.09270)（v2） |
-| `05-Calgary-Moltbook-TechnicalDiscourse.pdf` | What Software Engineering Looks Like to AI Agents? — An Empirical Study of AI-Only Technical Discourse on MoltBook | Junyu Huo et al. | 2026 | arXiv v2（University of Calgary） | Moltbook、GitHub Discussions | CC BY 4.0 | [arXiv:2605.08380v2](https://arxiv.org/abs/2605.08380v2) |
-| `06-CMU-Moltbook-PeerLearning.pdf` | When AI Agents Teach Each Other: Discourse Patterns Resembling Peer Learning in the Moltbook Community | Eason Chen et al. | 2026 | arXiv v2（Carnegie Mellon University） | Moltbook | CC BY 4.0 | [arXiv:2602.14477v2](https://arxiv.org/abs/2602.14477v2) |
-| `07-JMIR-HealthQA-InformationQuality.pdf` | You Get What You Pay for on Health Care Question and Answer Platforms: Nonparticipant Observational Study | Fatemeh Ameri, Kathleen Keeling, Reza Salehnejad | 2020 | JMIR 22(1):e13534 | 健康问答平台 | CC BY 4.0；© Ameri et al. | [doi:10.2196/13534](https://doi.org/10.2196/13534)；[出版社](https://www.jmir.org/2020/1/e13534) |
-| `08-BehavSci-Zhihu-KnowledgeContribution.pdf` | Examining the Effect of Knowledge Seeking on Knowledge Contribution in Q&A Communities | Junping Qiu et al. | 2024 | Behavioral Sciences 14(9):853 | 知乎 | CC BY 4.0 | [doi:10.3390/bs14090853](https://doi.org/10.3390/bs14090853) |
-
-## 笔记模板
-
-```markdown
-# 标题
-
-- 作者 / 年份 / 期刊：
-- 链接或 DOI：
-- PDF：本目录下的文件名（没有 PDF 就写链接）
-
-**问题**：……
-**数据与方法**：……
-**主要发现**：……
-**和本项目的关系**：……
-```
-
-## 阅读笔记与概念覆盖
-
-- [01 Chen：Chirper集体行为](Chen-2026-Chirper集体行为.md)
-- [02 Ng与Carley：LLM机器人真实性](Ng-2026-LLM机器人真实性.md)
-- [03 Zerhoudi：形式与功能](Zerhoudi-2026-形式与功能.md)
-- [04 De Marzo：Moltbook集体行为v2](DeMarzo-2026-Moltbook集体行为.md)
-- [四篇论文概念对照表](四篇论文概念对照表.md)：章节、概念、教程、实施边界。
-- [补充文献与方向重合核查](../notes/文献检索与方向重合核查-2026-10-23.md)：已核读范围和仍待对齐的近邻。
-- [信息系统视角补充四篇（2026-11-08）](2026-11-08-信息系统视角文献.md)：两篇 Moltbook 近邻及两篇人类问答研究，附逐篇笔记与全文。
+> 说明：Zerhoudi 与 De Marzo 两篇已核读全文；其余 5 篇笔记依据摘要与检索片段整理，正式引用前请对照目录内原文 PDF 核对细节。

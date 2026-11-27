@@ -1,2 +1,0 @@
-# Python 3.10+
-requests>=2.32.0
